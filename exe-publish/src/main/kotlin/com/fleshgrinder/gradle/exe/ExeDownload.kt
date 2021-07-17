@@ -1,7 +1,6 @@
 package com.fleshgrinder.gradle.exe
 
 import com.fleshgrinder.gradle.exe.transformers.AutoExeTransformer
-import com.fleshgrinder.platform.Env
 import com.fleshgrinder.platform.Platform
 import java.io.File
 import java.io.IOException
@@ -50,6 +49,7 @@ public open class ExeDownload @Inject constructor(
      * transformation to retrieve the exe file.
      */
     @get:Input
+    // TODO accept only URL?
     public val uri: Property<URI> = objects.property()
 
     @get:Internal
@@ -71,24 +71,13 @@ public open class ExeDownload @Inject constructor(
         .convention(uri.map { Platform.parse(it.path.substringAfterLast('/')) })
 
     @get:Internal
-    public val env: Property<Env> = objects.property()
-
-    @get:Internal
     public var filter: Spec<String>? = null
 
     @get:Internal
     public var transformer: ExeTransformer? = null
 
     @get:Internal
-    public val filename: Property<String> = objects.property<String>().convention(providers.provider {
-        buildString {
-            append(name.get())
-            append('-')
-            append(platform.get().id)
-            env.orNull?.let { append('-').append(it.id) }
-            append(".exe")
-        }
-    })
+    public val filename: Property<String> = objects.property<String>().convention(providers.provider { "${name.get()}-${platform.get()}.exe" })
 
     /**
      * Gets the downloaded exe file.

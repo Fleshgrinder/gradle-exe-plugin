@@ -1,6 +1,5 @@
 package com.fleshgrinder.gradle.exe.artifacts
 
-import com.fleshgrinder.platform.Env
 import com.fleshgrinder.platform.Platform
 import java.io.File
 import org.gradle.api.internal.tasks.AbstractTaskDependency
@@ -13,10 +12,9 @@ import org.gradle.api.tasks.TaskDependency
  */
 public class ExeArtifactProvider(
     name: String,
-    @JvmField private val fileProvider: Provider<File>,
+    private val fileProvider: Provider<File>,
     platform: Platform,
-    env: Env?,
-) : AbstractExeArtifact(name, platform, env) {
+) : AbstractExeArtifact(name, platform) {
     override fun getFile(): File = fileProvider.get()
     override fun getBuildDependencies(): TaskDependency =
         object : AbstractTaskDependency() {

@@ -1,6 +1,5 @@
 package com.fleshgrinder.gradle.exe
 
-import com.fleshgrinder.platform.Env
 import com.fleshgrinder.platform.Platform
 import javax.inject.Inject
 import org.gradle.api.Project
@@ -17,8 +16,8 @@ import org.gradle.kotlin.dsl.property
  */
 @ExeDsl
 public abstract class ExeRedistributionExtension @Inject constructor(
-    @JvmField private val project: Project,
-    @JvmField private val variants: ExeVariants,
+    private val project: Project,
+    private val variants: ExeVariants,
 ) : ExtensionAware {
     /**
      * Sets the group of the artifact that should be redistributed.
@@ -72,7 +71,6 @@ public abstract class ExeRedistributionExtension @Inject constructor(
     public fun artifact(
         classifier: String,
         platform: Platform = Platform.parse(classifier),
-        env: Env? = null,
     ) {
         project.dependencies {
             add(config.name, create(group.get(), name.get(), version.get(), configuration.orNull, classifier, ext.orNull))
@@ -83,6 +81,6 @@ public abstract class ExeRedistributionExtension @Inject constructor(
             config.files.single { it.name == filename }
         }
 
-        variants.add(file, platform, env)
+        variants.file(file, platform)
     }
 }

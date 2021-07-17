@@ -8,9 +8,5 @@ pluginManagement {
 rootProject.name = "gradle-exe-plugin"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include(
-    "exe-base",
-    "exe",
-    "exe-publish",
-    "exe-maven-publish",
-)
+includeBuild("exe-gradle-plugin")
+include("exe-base", "exe", "exe-publish", "exe-maven-publish")
